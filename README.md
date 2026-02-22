@@ -34,7 +34,7 @@ It’s designed to be modular, easy to expand, and portfolio-ready — showcasin
 
 ---
 
-📜 **License**
+## 📜 **License**
 This project is open-source under the MIT License.
 Feel free to fork, modify, and experiment with your own twists!
 **Chomp pixels, dodge ghosts, relive nostalgia**
