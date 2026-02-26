@@ -1,3 +1,19 @@
+let state = "menu";
+
+function startGame() {
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("gameCanvas").style.display = "block";
+  state = "playing";
+
+  // Start the game loop here
+  setInterval(gameLoop, 300); 
+  render();
+}
+
+function openSettings() {
+  alert("Settings menu coming soon!");
+}
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -33,6 +49,13 @@ for (let y = 0; y < maze.length; y++) {
   }
 }
 
+// Eat the starting dot immediately
+if (dots[player.y][player.x]) {
+  dots[player.y][player.x] = false;
+  score++;
+  console.log("Score:", score);
+}
+
 function drawMaze() {
   for (let y = 0; y < maze.length; y++) {
     for (let x = 0; x < maze[y].length; x++) {
@@ -49,15 +72,12 @@ function drawDots() {
   for (let y = 0; y < dots.length; y++) {
     for (let x = 0; x < dots[y].length; x++) {
       if (dots[y][x]) {
-        ctx.beginPath();
-        ctx.arc(
-          offsetX + x * tileSize + tileSize/2,
-          offsetY + y * tileSize + tileSize/2,
-          5,
-          0,
-          Math.PI * 2
+        ctx.fillRect(
+          offsetX + x * tileSize + tileSize/2 - 3, // center the pixel
+          offsetY + y * tileSize + tileSize/2 - 3,
+          6, // width
+          6  // height
         );
-        ctx.fill();
       }
     }
   }
@@ -74,6 +94,13 @@ function drawPlayer() {
     Math.PI * 2
   );
   ctx.fill();
+}
+
+function drawScore() {
+  ctx.fillStyle = "white";
+  ctx.font = "20px Arial";
+  ctx.textAlign = "left";
+  ctx.fillText("Score: " + score, 10, 25);
 }
 
 function render() {
@@ -113,20 +140,11 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") direction = "right";
 });
 
-function drawScore() {
-  ctx.fillStyle = "white";
-  ctx.font = "20px Arial";
-  ctx.textAlign = "left";
-  ctx.fillText("Score: " + score, 10, 25);
-}
-
-// Game loop (runs every 200ms)
+// Game loop (runs every 300ms)
 function gameLoop() {
   movePlayer();
   render();
 }
 
-setInterval(gameLoop, 200); // adjust speed here
-
-// Initial draw
+// Initial draw (menu shows first, game starts only when Start is pressed)
 render();
