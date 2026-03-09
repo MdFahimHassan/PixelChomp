@@ -29,10 +29,10 @@ It’s designed to be modular, easy to expand, and portfolio-ready — showcasin
 
 ## 📂 Project Structure
 PixelChomp/
--- index.html        # Entry point with canvas and menu
--- game.js           # Core game logic
--- background.png    # Arcade-style background
--- README.md         # Project documentation
+- index.html        # Entry point with canvas and menu
+- game.js           # Core game logic
+- background.png    # Arcade-style background
+- README.md         # Project documentation
 
 ## 🎯 Future Plans
 - Add ghost enemies with simple AI.
