@@ -1,16 +1,16 @@
 # PixelChomp 🎮
 
-PixelChomp is a nostalgic Pac-Man-inspired arcade game built from scratch in Python with Pygame.  
-It reimagines the classic pellet-chomping fun with custom mazes, playful ghost AI, and unique power-ups — blending retro vibes with modern polish.
+PixelChomp is a retro‑style browser game inspired by classic arcade mazes. Built entirely with HTML5 Canvas, CSS, and JavaScript, it features pixelated dots, continuous player movement, and a nostalgic neon vibe.
 
 ---
 
 ## ✨ Features
-- Smooth player movement and collision detection
-- Grid-based maze system with pellets and walls
-- Ghost AI with chase, scatter, and frightened modes
-- Scoring system and lives mechanic
-- Retro-inspired visuals with a unique twist
+- Maze rendering using a grid system (walls vs. empty spaces).
+- Player movement: the yellow character moves continuously in a chosen direction.
+- Pixel dots: collectible squares scattered across the maze.
+- Score tracking: live score display on the canvas.
+- Start menu: title screen with Start and Settings options before gameplay begins.
+- Custom background: retro arcade aesthetic instead of plain white.
 
 ---
 
@@ -21,16 +21,33 @@ It’s designed to be modular, easy to expand, and portfolio-ready — showcasin
 ---
 
 ## 🛠 Tech Stack
-- **Python 3.x**
-- **Pygame**
+- HTML5 Canvas for rendering the maze, player, and dots.
+- CSS for styling the background and menu.
+- JavaScript for game logic, movement, scoring, and state management.
 
 ---
 
+## 📂 Project Structure
+PixelChomp/
+-- index.html        # Entry point with canvas and menu
+-- game.js           # Core game logic
+-- background.png    # Arcade-style background
+-- README.md         # Project documentation
+
 ## 🎯 Future Plans
-- Add cosmic/heritage-inspired themes
-- Experiment with dynamic animations and sound effects
-- Explore meme-infused branding for fun fallback visuals
-- Expand maze variety and difficulty levels
+- Add ghost enemies with simple AI.
+- Settings menu with speed options (Slow / Normal / Fast).
+- Win screen when all dots are collected.
+- Animated title and glowing effects for extra arcade flair
+
+---
+
+## ▶️ How to Play
+- Open index.html in your browser.
+- On the start screen, click Start (or press Enter if shortcut added).
+- Use Arrow Keys to change direction.
+- Eat all the pixel dots to increase your score.
+- Avoid walls — you can only move through empty spaces.
 
 ---
 
