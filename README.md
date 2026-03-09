@@ -53,5 +53,5 @@ PixelChomp/
 
 ## 📜 **License**
 This project is open-source under the MIT License.
-Feel free to fork, modify, and experiment with your own twists!
+Feel free to fork, modify, and experiment with your own twists!✨✨✨
 **Chomp pixels, dodge ghosts, relive nostalgia**
