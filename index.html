@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PixelChomp</title>
+  <style>
+    body {
+      margin: 0;
+      background: url("assets/bg.png") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Press Start 2P', cursive; /* retro font */
+      color: white;
+      text-align: center;
+    }
+    #menu {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #menu h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: yellow;
+      text-shadow: 2px 2px 5px cyan;
+    }
+    #menu button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      font-size: 20px;
+      background: black;
+      color: white;
+      border: 2px solid cyan;
+      cursor: pointer;
+    }
+    #menu button:hover {
+      background: cyan;
+      color: black;
+    }
+    canvas {
+      display: block;
+      margin: auto;
+      background-color: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div id="menu">
+    <h1>PixelChomp</h1>
+    <button onclick="startGame()">Start</button>
+    <button onclick="openSettings()">Settings</button>
+  </div>
+
+  <canvas id="gameCanvas" width="600" height="600" style="display:none;"></canvas>
+  <script src="game.js"></script>
+</body>
+</html>
