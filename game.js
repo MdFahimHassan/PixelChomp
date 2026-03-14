@@ -1,3 +1,5 @@
+let mouthOpen = 0;        // current mouth angle
+let mouthClosing = true; // whether mouth is opening or closing
 let state = "menu";
 
 function startGame() {
@@ -85,14 +87,33 @@ function drawDots() {
 
 function drawPlayer() {
   ctx.fillStyle = "yellow";
+
+  const cx = offsetX + player.x * tileSize + tileSize / 2;
+  const cy = offsetY + player.y * tileSize + tileSize / 2;
+  const r = tileSize / 2 - 5;
+
+  const MOUTH_ANGLE = Math.PI / 8; // 22.5° bite
+
+  let start, end;
+  if (direction === "right") {
+    start = mouthOpen ? MOUTH_ANGLE : 0;
+    end   = mouthOpen ? 2 * Math.PI - MOUTH_ANGLE : 2 * Math.PI;
+  } else if (direction === "left") {
+    // FIXED: wedge points left
+    start = mouthOpen ? Math.PI + MOUTH_ANGLE : 0;
+    end   = mouthOpen ? Math.PI - MOUTH_ANGLE : 2 * Math.PI;
+  } else if (direction === "up") {
+    start = mouthOpen ? 1.5 * Math.PI + MOUTH_ANGLE : 0;
+    end   = mouthOpen ? 1.5 * Math.PI - MOUTH_ANGLE + 2 * Math.PI : 2 * Math.PI;
+  } else if (direction === "down") {
+    start = mouthOpen ? 0.5 * Math.PI + MOUTH_ANGLE : 0;
+    end   = mouthOpen ? 0.5 * Math.PI - MOUTH_ANGLE + 2 * Math.PI : 2 * Math.PI;
+  }
+
   ctx.beginPath();
-  ctx.arc(
-    offsetX + player.x * tileSize + tileSize/2,
-    offsetY + player.y * tileSize + tileSize/2,
-    tileSize/2 - 5,
-    0,
-    Math.PI * 2
-  );
+  ctx.moveTo(cx, cy);
+  ctx.arc(cx, cy, r, start, end, false);
+  ctx.closePath();
   ctx.fill();
 }
 
@@ -142,6 +163,9 @@ document.addEventListener("keydown", (e) => {
 
 // Game loop (runs every 300ms)
 function gameLoop() {
+  // Toggle mouth state each frame
+  mouthOpen = !mouthOpen;
+
   movePlayer();
   render();
 }

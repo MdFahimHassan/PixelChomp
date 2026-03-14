@@ -3,55 +3,120 @@
 <head>
   <title>PixelChomp</title>
   <style>
+
+    @font-face {
+  font-family: 'Crackman';
+  src: url('assets/fonts/Crackman.otf') format('opentype'),
+       url('assets/fonts/Crackman Front.otf') format('opentype'),
+       url('assets/fonts/Crackman Back.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+    @font-face {
+  font-family: 'ByteBounce';
+  src: url('assets/fonts/ByteBounce.ttf') format('opentype'),
+       url('assets/fonts/ByteBounce-Bold.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
     body {
       margin: 0;
-      background: url("assets/bg.png") no-repeat center center fixed;
-      background-size: cover;
       font-family: 'Press Start 2P', cursive; /* retro font */
       color: white;
       text-align: center;
+      overflow: hidden; /* prevent scrollbars */
     }
+
+    /* Background video fills the screen */
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1; /* behind everything */
+      background: black;
+    }
+
     #menu {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
+
     #menu h1 {
-      font-size: 48px;
+      font-family: 'Crackman', sans-serif;
+      font-size: 64px;
       margin-bottom: 20px;
-      color: yellow;
-      text-shadow: 2px 2px 5px cyan;
+      color: #FFD700; /* golden yellow */
+      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; /* cosmic glow */
+      animation: pulseGlow 2s infinite alternate;
     }
+/* Smooth pulsing glow */
+@keyframes pulseGlow {
+  0% {
+    text-shadow: 
+      0 0 5px #00ffff,
+      0 0 10px #ff00ff,
+      0 0 20px #00ffff;
+  }
+  100% {
+    text-shadow: 
+      0 0 20px #00ffff,
+      0 0 40px #ff00ff,
+      0 0 60px #00ffff;
+  }
+}
+
+
+
     #menu button {
-      display: block;
-      margin: 10px auto;
-      padding: 10px 20px;
-      font-size: 20px;
-      background: black;
-      color: white;
-      border: 2px solid cyan;
-      cursor: pointer;
-    }
-    #menu button:hover {
-      background: cyan;
-      color: black;
-    }
+      font-family: 'ByteBounce', sans-serif;
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  font-size: 20px;
+  background: black;
+  color: white;
+  border: 2px solid cyan;
+  cursor: pointer;
+  transition: all 0.3s ease; /* smooth animation */
+}
+
+#menu button:hover {
+  background: cyan;
+  color: black;
+  transform: scale(1.1); /* grow slightly */
+  box-shadow: 0 0 15px cyan, 0 0 30px cyan; /* glowing effect */
+}
+
     canvas {
       display: block;
       margin: auto;
       background-color: transparent;
+      position: relative;
+      z-index: 1; /* above video */
     }
   </style>
 </head>
 <body>
+  <!-- Looping video background -->
+  <video id="bgVideo" autoplay loop muted playsinline>
+    <source src="assets/bg.mp4" type="video/mp4">
+  </video>
+
+  <!-- Menu -->
   <div id="menu">
     <h1>PixelChomp</h1>
     <button onclick="startGame()">Start</button>
     <button onclick="openSettings()">Settings</button>
   </div>
 
+  <!-- Game canvas -->
   <canvas id="gameCanvas" width="600" height="600" style="display:none;"></canvas>
+
   <script src="game.js"></script>
 </body>
 </html>
