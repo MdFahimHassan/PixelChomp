@@ -20,31 +20,37 @@
   font-style: normal;
 }
     body {
-      margin: 0;
-      font-family: 'Press Start 2P', cursive; /* retro font */
-      color: white;
-      text-align: center;
-      overflow: hidden; /* prevent scrollbars */
-    }
+  margin: 0;
+  height: 100vh;
+  font-family: 'Press Start 2P', cursive; /* retro font */
+  color: white;
+  text-align: center;
+  overflow: hidden; /* prevent scrollbars */
+}
+
 
     /* Background video fills the screen */
-    #bgVideo {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1; /* behind everything */
-      background: black;
-    }
+    /* Background video fills the screen */
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1; /* behind everything */
+  background: black;
+}
 
-    #menu {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+
+    #menu,
+#difficultyMenu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 
     #menu h1 {
       font-family: 'Crackman', sans-serif;
@@ -71,9 +77,8 @@
 }
 
 
-
-    #menu button {
-      font-family: 'ByteBounce', sans-serif;
+#menu button {
+  font-family: 'ByteBounce', sans-serif;
   display: block;
   margin: 10px auto;
   padding: 10px 20px;
@@ -92,13 +97,51 @@
   box-shadow: 0 0 15px cyan, 0 0 30px cyan; /* glowing effect */
 }
 
-    canvas {
-      display: block;
-      margin: auto;
-      background-color: transparent;
-      position: relative;
-      z-index: 1; /* above video */
-    }
+#difficultyMenu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-family: 'ByteBounce', sans-serif;
+}
+
+#difficultyMenu h2 {
+  font-size: 64px;
+  margin-bottom: 20px;
+  color: cyan;
+  text-shadow: 0 0 10px #00ffff;
+}
+
+#difficultyMenu button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  font-size: 20px;
+  background: black;
+  color: white;
+  border: 2px solid yellow;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'ByteBounce', sans-serif;
+}
+
+#difficultyMenu button:hover {
+  background: yellow;
+  color: black;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px yellow, 0 0 30px yellow;
+}
+/* Canvas styling */
+#gameCanvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  z-index: 1; /* above video */
+}
+
   </style>
 </head>
 <body>
@@ -112,6 +155,12 @@
     <h1>PixelChomp</h1>
     <button onclick="startGame()">Start</button>
     <button onclick="openSettings()">Settings</button>
+  </div>
+  <div id="difficultyMenu" style="display:none;">
+    <h2>Select Difficulty</h2>
+    <button onclick="setDifficulty('easy')">Easy</button>
+    <button onclick="setDifficulty('medium')">Medium</button>
+    <button onclick="setDifficulty('hard')">Hard</button>
   </div>
 
   <!-- Game canvas -->

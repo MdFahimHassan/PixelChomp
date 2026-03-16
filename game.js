@@ -1,69 +1,406 @@
-let mouthOpen = 0;        // current mouth angle
-let mouthClosing = true; // whether mouth is opening or closing
-let state = "menu";
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
 
+let currentLevel = 1;
+let maxLevels = 10;
+let difficulty = "easy";
+let maze = [];
+let dots = [];
+let player = {x:1,y:1};
+let direction = "right";
+let score = 0;
+let mouthAngle = 0;
+let mouthOpening = true;
+
+// --- LEVEL DATA ---
+// Placeholder: add your 30 levels here later
+const levels = {
+  easy: [
+    // Level 1
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,0,1],
+      [1,0,0,0,1,0,1,1],
+      [1,1,1,0,1,0,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 2
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,1,0,0,0,1],
+      [1,0,1,0,1,0,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 3
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,0,1,0,0,0,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 4
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 5
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,0,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,0,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 6
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,0,1,0,1,0,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 7
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,0,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 8
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,0,1,0,0,0,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 9
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,0,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 10
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,0,1,0,0,0,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ]
+  ],
+  medium: [
+    // Level 1
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,1,0,0,0,1],
+      [1,0,1,0,1,0,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 2
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,1,0,0,1,0,1],
+      [1,0,1,0,1,0,0,1],
+      [1,0,0,0,1,0,1,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 3
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,0,1,1,0,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,1,0,0,0,1],
+      [1,0,1,0,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 4
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,0,0,0,1,1,0,1],
+      [1,0,1,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 5
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,0,1,0,0,0,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 6
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,0,0,0,1,0,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 7
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,0,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 8
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,0,0,0,1,0,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 9
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,0,1,0,0,0,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 10
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,0,0,0,1,0,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ]
+  ],
+  hard: [
+    // Level 1
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,1,0,0,1,0,1],
+      [1,0,1,0,1,0,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 2
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,1,0,1,0,0,1],
+      [1,0,0,0,1,0,1,1],
+      [1,1,0,1,0,0,0,1],
+      [1,0,0,0,1,1,0,1],
+      [1,0,1,0,0,0,0,1],
+      [1,0,0,1,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 3
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,0,1,1,0,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,1,0,0,0,1],
+      [1,0,1,0,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 4
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,0,0,0,1,1,0,1],
+      [1,0,1,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 5
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,0,0,0,1,0,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 6
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,1,0,0,0,1],
+      [1,0,1,0,1,0,1,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 7
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,0,0,0,1,0,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 8
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,0,1,1,0,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,1,0,0,0,1],
+      [1,0,1,0,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 9
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,1,0,0,0,0,1],
+      [1,0,0,0,1,1,0,1],
+      [1,0,1,0,0,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,0,0,1],
+      [1,1,1,1,1,1,1,1]
+    ],
+    // Level 10
+    [
+      [1,1,1,1,1,1,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,0,1,0,0,0,1,1],
+      [1,0,0,0,1,0,0,1],
+      [1,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,0,1],
+      [1,0,1,1,1,1,0,1],
+      [1,1,1,1,1,1,1,1]
+    ]
+  ]
+};
+
+// --- MENU FUNCTIONS ---
 function startGame() {
   document.getElementById("menu").style.display = "none";
-  document.getElementById("gameCanvas").style.display = "block";
-  state = "playing";
+  document.getElementById("difficultyMenu").style.display = "block";
+}
 
-  // Start the game loop here
-  setInterval(gameLoop, 300); 
-  render();
+function setDifficulty(level) {
+  difficulty = level;
+  currentLevel = 1;
+  document.getElementById("difficultyMenu").style.display = "none";
+  document.getElementById("gameCanvas").style.display = "block";
+  initGame(level);
 }
 
 function openSettings() {
   alert("Settings menu coming soon!");
 }
 
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+// --- GAME INIT ---
+function initGame(level) {
+  maze = levels[level][currentLevel-1]; // load maze later
+  resetDots();
+  score = 0;
+  player = {x:1,y:1};
+  setInterval(gameLoop, 300); // movement loop
+  animateMouth();             // mouth animation loop
+}
 
-// Maze grid (1 = wall, 0 = empty)
-const maze = [
-  [1,1,1,1,1,1,1,1],
-  [1,0,0,0,0,0,0,1],
-  [1,0,1,1,1,0,0,1],
-  [1,0,0,0,1,0,1,1],
-  [1,1,1,0,1,0,0,1],
-  [1,0,0,0,0,0,0,1],
-  [1,0,1,1,1,1,0,1],
-  [1,1,1,1,1,1,1,1]
-];
-
-const tileSize = 50;
-const mazeWidth = maze[0].length * tileSize;
-const mazeHeight = maze.length * tileSize;
-
-const offsetX = (canvas.width - mazeWidth) / 2;
-const offsetY = (canvas.height - mazeHeight) / 2;
-
-let player = { x: 1, y: 1 };
-let direction = "right"; // default starting direction
-let score = 0;
-
-// Initialize dots
-let dots = [];
-for (let y = 0; y < maze.length; y++) {
-  dots[y] = [];
-  for (let x = 0; x < maze[y].length; x++) {
-    dots[y][x] = maze[y][x] === 0 ? true : false;
+// --- DOTS ---
+function resetDots() {
+  dots = [];
+  if (!maze) return;
+  for (let y = 0; y < maze.length; y++) {
+    dots[y] = [];
+    for (let x = 0; x < maze[y].length; x++) {
+      dots[y][x] = maze[y][x] === 0;
+    }
   }
 }
 
-// Eat the starting dot immediately
-if (dots[player.y][player.x]) {
-  dots[player.y][player.x] = false;
-  score++;
-  console.log("Score:", score);
-}
-
+// --- DRAWING ---
 function drawMaze() {
+  if (!maze) return;
   for (let y = 0; y < maze.length; y++) {
     for (let x = 0; x < maze[y].length; x++) {
       if (maze[y][x] === 1) {
         ctx.fillStyle = "blue";
-        ctx.fillRect(offsetX + x * tileSize, offsetY + y * tileSize, tileSize, tileSize);
+        ctx.fillRect(x*50, y*50, 50, 50);
       }
     }
   }
@@ -74,12 +411,7 @@ function drawDots() {
   for (let y = 0; y < dots.length; y++) {
     for (let x = 0; x < dots[y].length; x++) {
       if (dots[y][x]) {
-        ctx.fillRect(
-          offsetX + x * tileSize + tileSize/2 - 3, // center the pixel
-          offsetY + y * tileSize + tileSize/2 - 3,
-          6, // width
-          6  // height
-        );
+        ctx.fillRect(x*50+22, y*50+22, 6, 6);
       }
     }
   }
@@ -87,29 +419,23 @@ function drawDots() {
 
 function drawPlayer() {
   ctx.fillStyle = "yellow";
-
-  const cx = offsetX + player.x * tileSize + tileSize / 2;
-  const cy = offsetY + player.y * tileSize + tileSize / 2;
-  const r = tileSize / 2 - 5;
-
-  const MOUTH_ANGLE = Math.PI / 8; // 22.5° bite
-
+  const cx = player.x*50+25;
+  const cy = player.y*50+25;
+  const r = 20;
   let start, end;
   if (direction === "right") {
-    start = mouthOpen ? MOUTH_ANGLE : 0;
-    end   = mouthOpen ? 2 * Math.PI - MOUTH_ANGLE : 2 * Math.PI;
+    start = mouthAngle;
+    end   = 2*Math.PI - mouthAngle;
   } else if (direction === "left") {
-    // FIXED: wedge points left
-    start = mouthOpen ? Math.PI + MOUTH_ANGLE : 0;
-    end   = mouthOpen ? Math.PI - MOUTH_ANGLE : 2 * Math.PI;
+    start = Math.PI + mouthAngle;
+    end   = Math.PI - mouthAngle;
   } else if (direction === "up") {
-    start = mouthOpen ? 1.5 * Math.PI + MOUTH_ANGLE : 0;
-    end   = mouthOpen ? 1.5 * Math.PI - MOUTH_ANGLE + 2 * Math.PI : 2 * Math.PI;
+    start = 1.5*Math.PI + mouthAngle;
+    end   = 1.5*Math.PI - mouthAngle + 2*Math.PI;
   } else if (direction === "down") {
-    start = mouthOpen ? 0.5 * Math.PI + MOUTH_ANGLE : 0;
-    end   = mouthOpen ? 0.5 * Math.PI - MOUTH_ANGLE + 2 * Math.PI : 2 * Math.PI;
+    start = 0.5*Math.PI + mouthAngle;
+    end   = 0.5*Math.PI - mouthAngle + 2*Math.PI;
   }
-
   ctx.beginPath();
   ctx.moveTo(cx, cy);
   ctx.arc(cx, cy, r, start, end, false);
@@ -120,55 +446,84 @@ function drawPlayer() {
 function drawScore() {
   ctx.fillStyle = "white";
   ctx.font = "20px Arial";
-  ctx.textAlign = "left";
   ctx.fillText("Score: " + score, 10, 25);
+  ctx.fillText("Level: " + currentLevel + "/" + maxLevels, 10, 50);
 }
 
 function render() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
   drawMaze();
   drawDots();
   drawPlayer();
-  drawScore(); // show score at top-left
+  drawScore();
 }
 
-// Movement logic
+// --- MOVEMENT ---
 function movePlayer() {
   let newX = player.x;
   let newY = player.y;
-
   if (direction === "up") newY--;
   if (direction === "down") newY++;
   if (direction === "left") newX--;
   if (direction === "right") newX++;
-
-  if (maze[newY][newX] === 0) {
+  if (maze && maze[newY][newX] === 0) {
     player.x = newX;
     player.y = newY;
     if (dots[newY][newX]) {
       dots[newY][newX] = false;
       score++;
-      console.log("Score:", score);
     }
   }
 }
 
-// Listen for arrow keys to change direction
-document.addEventListener("keydown", (e) => {
+// --- INPUT ---
+document.addEventListener("keydown", e => {
   if (e.key === "ArrowUp") direction = "up";
   if (e.key === "ArrowDown") direction = "down";
   if (e.key === "ArrowLeft") direction = "left";
   if (e.key === "ArrowRight") direction = "right";
 });
 
-// Game loop (runs every 300ms)
+// --- GAME LOOP ---
 function gameLoop() {
-  // Toggle mouth state each frame
-  mouthOpen = !mouthOpen;
-
   movePlayer();
   render();
+  if (checkLevelComplete()) nextLevel();
 }
 
-// Initial draw (menu shows first, game starts only when Start is pressed)
+// --- MOUTH ANIMATION ---
+function animateMouth() {
+  if (mouthOpening) {
+    mouthAngle += 0.08;
+    if (mouthAngle >= Math.PI/6) mouthOpening = false;
+  } else {
+    mouthAngle -= 0.08;
+    if (mouthAngle <= 0) mouthOpening = true;
+  }
+  requestAnimationFrame(animateMouth);
+}
+
+// --- LEVEL PROGRESSION ---
+function checkLevelComplete() {
+  for (let y = 0; y < dots.length; y++) {
+    for (let x = 0; x < dots[y].length; x++) {
+      if (dots[y][x]) return false;
+    }
+  }
+  return true;
+}
+
+function nextLevel() {
+  if (currentLevel < maxLevels) {
+    currentLevel++;
+    maze = levels[difficulty][currentLevel-1];
+    resetDots();
+    player = {x:1,y:1};
+    alert("Level " + currentLevel + "!");
+  } else {
+    alert("You finished all " + maxLevels + " levels!");
+  }
+}
+
+// --- INITIAL DRAW ---
 render();
