@@ -1,149 +1,167 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>PixelChomp</title>
   <style>
+    @font-face {
+      font-family: 'Crackman';
+      src: url('assets/fonts/Crackman.otf') format('opentype'),
+        url('assets/fonts/Crackman Front.otf') format('opentype'),
+        url('assets/fonts/Crackman Back.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
 
     @font-face {
-  font-family: 'Crackman';
-  src: url('assets/fonts/Crackman.otf') format('opentype'),
-       url('assets/fonts/Crackman Front.otf') format('opentype'),
-       url('assets/fonts/Crackman Back.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-    @font-face {
-  font-family: 'ByteBounce';
-  src: url('assets/fonts/ByteBounce.ttf') format('opentype'),
-       url('assets/fonts/ByteBounce-Bold.ttf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
+      font-family: 'ByteBounce';
+      src: url('assets/fonts/ByteBounce.ttf') format('opentype'),
+        url('assets/fonts/ByteBounce-Bold.ttf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     body {
-  margin: 0;
-  height: 100vh;
-  font-family: 'Press Start 2P', cursive; /* retro font */
-  color: white;
-  text-align: center;
-  overflow: hidden; /* prevent scrollbars */
-}
+      margin: 0;
+      height: 100vh;
+      font-family: 'Press Start 2P', cursive;
+      /* retro font */
+      color: white;
+      text-align: center;
+      overflow: hidden;
+      /* prevent scrollbars */
+    }
 
 
     /* Background video fills the screen */
     /* Background video fills the screen */
-#bgVideo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1; /* behind everything */
-  background: black;
-}
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      /* behind everything */
+      background: black;
+    }
 
 
     #menu,
-#difficultyMenu {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+    #difficultyMenu {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
 
 
     #menu h1 {
       font-family: 'Crackman', sans-serif;
       font-size: 64px;
       margin-bottom: 20px;
-      color: #FFD700; /* golden yellow */
-      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; /* cosmic glow */
+      color: #FFD700;
+      /* golden yellow */
+      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+      /* cosmic glow */
       animation: pulseGlow 2s infinite alternate;
     }
-/* Smooth pulsing glow */
-@keyframes pulseGlow {
-  0% {
-    text-shadow: 
-      0 0 5px #00ffff,
-      0 0 10px #ff00ff,
-      0 0 20px #00ffff;
-  }
-  100% {
-    text-shadow: 
-      0 0 20px #00ffff,
-      0 0 40px #ff00ff,
-      0 0 60px #00ffff;
-  }
-}
+
+    /* Smooth pulsing glow */
+    @keyframes pulseGlow {
+      0% {
+        text-shadow:
+          0 0 5px #00ffff,
+          0 0 10px #ff00ff,
+          0 0 20px #00ffff;
+      }
+
+      100% {
+        text-shadow:
+          0 0 20px #00ffff,
+          0 0 40px #ff00ff,
+          0 0 60px #00ffff;
+      }
+    }
 
 
-#menu button {
-  font-family: 'ByteBounce', sans-serif;
-  display: block;
-  margin: 10px auto;
-  padding: 10px 20px;
-  font-size: 20px;
-  background: black;
-  color: white;
-  border: 2px solid cyan;
-  cursor: pointer;
-  transition: all 0.3s ease; /* smooth animation */
-}
+    #menu button {
+      font-family: 'ByteBounce', sans-serif;
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      font-size: 20px;
+      background: black;
+      color: white;
+      border: 2px solid cyan;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      /* smooth animation */
+    }
 
-#menu button:hover {
-  background: cyan;
-  color: black;
-  transform: scale(1.1); /* grow slightly */
-  box-shadow: 0 0 15px cyan, 0 0 30px cyan; /* glowing effect */
-}
+    #menu button:hover {
+      background: cyan;
+      color: black;
+      transform: scale(1.1);
+      /* grow slightly */
+      box-shadow: 0 0 15px cyan, 0 0 30px cyan;
+      /* glowing effect */
+    }
 
-#difficultyMenu {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  font-family: 'ByteBounce', sans-serif;
-}
+    #difficultyMenu {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-family: 'ByteBounce', sans-serif;
+    }
 
-#difficultyMenu h2 {
-  font-size: 64px;
-  margin-bottom: 20px;
-  color: cyan;
-  text-shadow: 0 0 10px #00ffff;
-}
+    #difficultyMenu h2 {
+      font-size: 64px;
+      margin-bottom: 20px;
+      color: cyan;
+      text-shadow: 0 0 10px #00ffff;
+    }
 
-#difficultyMenu button {
-  display: block;
-  margin: 10px auto;
-  padding: 10px 20px;
-  font-size: 20px;
-  background: black;
-  color: white;
-  border: 2px solid yellow;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: 'ByteBounce', sans-serif;
-}
+    #difficultyMenu button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      font-size: 20px;
+      background: black;
+      color: white;
+      border: 2px solid yellow;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'ByteBounce', sans-serif;
+    }
 
-#difficultyMenu button:hover {
-  background: yellow;
-  color: black;
-  transform: scale(1.1);
-  box-shadow: 0 0 15px yellow, 0 0 30px yellow;
-}
-/* Canvas styling */
-#gameCanvas {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: transparent;
-  z-index: 1; /* above video */
-}
+    #difficultyMenu button:hover {
+      background: yellow;
+      color: black;
+      transform: scale(1.1);
+      box-shadow: 0 0 15px yellow, 0 0 30px yellow;
+    }
 
+    /* Canvas styling */
+    #gameCanvas {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      max-width: 90vw;
+      max-height: 90vh;
+      background-color: transparent;
+      z-index: 1;
+      /* above video */
+    }
   </style>
 </head>
+
 <body>
   <!-- Looping video background -->
   <video id="bgVideo" autoplay loop muted playsinline>
@@ -168,4 +186,5 @@
 
   <script src="game.js"></script>
 </body>
+
 </html>
