@@ -393,6 +393,7 @@ function startLevel(levelNumber) {
   document.getElementById("levelSelect").style.display = "none";
   document.getElementById("gameCanvas").style.display = "block";
   initGame(difficulty);
+  playMusic(); // start background music
 }
 
 function openSettings() {
@@ -691,9 +692,23 @@ function goToMenu() {
     clearInterval(gameInterval);
     gameInterval = null;
   }
+  stopMusic(); // stop background music
   document.getElementById("levelComplete").style.display = "none";
   document.getElementById("menu").style.display = "block";
 }
+
+function playMusic() {
+  const music = document.getElementById("bgMusic");
+  music.volume = 0.5; // adjust volume (0.0–1.0)
+  music.play();
+}
+
+function stopMusic() {
+  const music = document.getElementById("bgMusic");
+  music.pause();
+  music.currentTime = 0; // reset to start
+}
+
 
 function retryLevel() {
   ghostCounter = 0;
