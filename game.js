@@ -30,6 +30,7 @@ const gameOverMessages = [
   "FAAAHHHH!",
   "Noob!",
   "Mission failed, well get em next time!",
+  "Like Your CG XD",
 ];
 const tileSize = 50;
 const boardPadding = 100; // center 8x8 maze inside 600x600 canvas
