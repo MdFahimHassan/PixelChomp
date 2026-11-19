@@ -1,10 +1,10 @@
-# PixelChomp 🎮
+# PixelChomp 
 
 PixelChomp is a retro‑style browser game inspired by classic arcade mazes. Built entirely with HTML5 Canvas, CSS, and JavaScript, it features pixelated dots, continuous player movement, and a nostalgic neon vibe.
 
 ---
 
-## ✨ Features
+## Features
 - Maze rendering using a grid system (walls vs. empty spaces).
 - Player movement: the yellow character moves continuously in a chosen direction.
 - Pixel dots: collectible squares scattered across the maze.
@@ -14,27 +14,27 @@ PixelChomp is a retro‑style browser game inspired by classic arcade mazes. Bui
 
 ---
 
-## 🚀 Goals
+## Goals
 This solo project is an experiment in blending **classic arcade nostalgia** with **creative UI/UX polish**.  
 It’s designed to be modular, easy to expand, and portfolio-ready — showcasing game logic, design instincts, and branding creativity.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 - HTML5 Canvas for rendering the maze, player, and dots.
 - CSS for styling the background and menu.
 - JavaScript for game logic, movement, scoring, and state management.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 PixelChomp/
 - index.html        # Entry point with canvas and menu
 - game.js           # Core game logic
 - background.png    # Arcade-style background
 - README.md         # Project documentation
 
-## 🎯 Future Plans
+## Future Plans
 - Add ghost enemies with simple AI.
 - Settings menu with speed options (Slow / Normal / Fast).
 - Win screen when all dots are collected.
@@ -42,7 +42,7 @@ PixelChomp/
 
 ---
 
-## ▶️ How to Play
+## How to Play
 - Open index.html in your browser.
 - On the start screen, click Start (or press Enter if shortcut added).
 - Use Arrow Keys to change direction.
@@ -51,7 +51,7 @@ PixelChomp/
 
 ---
 
-## 📜 **License**
+## **License**
 This project is open-source under the MIT License.
 Feel free to fork, modify, and experiment with your own twists!✨✨✨
 **Chomp pixels, dodge ghosts, relive nostalgia**
