@@ -1,57 +1,50 @@
-# PixelChomp 
+# PixelChomp
 
-PixelChomp is a retro‑style browser game inspired by classic arcade mazes. Built entirely with HTML5 Canvas, CSS, and JavaScript, it features pixelated dots, continuous player movement, and a nostalgic neon vibe.
+A retro maze-chase game for the browser. Eat every pellet, outsmart the ghost, clear all 30 levels.
 
----
+Built with plain HTML5 Canvas and JavaScript. No framework, no build step.
 
 ## Features
-- Maze rendering using a grid system (walls vs. empty spaces).
-- Player movement: the yellow character moves continuously in a chosen direction.
-- Pixel dots: collectible squares scattered across the maze.
-- Score tracking: live score display on the canvas.
-- Start menu: title screen with Start and Settings options before gameplay begins.
-- Custom background: retro arcade aesthetic instead of plain white.
 
----
+- **30 levels** across three difficulties: Easy, Medium and Hard (10 each).
+- **Pathfinding ghost:** the ghost chases you using breadth-first search (BFS) on the maze grid, so it always finds the shortest route.
+- **Difficulty changes ghost speed:** it moves slower than you on Easy and matches your speed on Hard.
+- **Level flow:** clear a maze to advance. Finish the last level to see the win screen and try another mode.
+- **Retro presentation:** pixel fonts, looping video background and background music.
 
-## Goals
-This solo project is an experiment in blending **classic arcade nostalgia** with **creative UI/UX polish**.  
-It’s designed to be modular, easy to expand, and portfolio-ready — showcasing game logic, design instincts, and branding creativity.
+## Controls
 
----
+| Key | Action |
+|---|---|
+| Arrow keys | Move |
 
-## Tech Stack
-- HTML5 Canvas for rendering the maze, player, and dots.
-- CSS for styling the background and menu.
-- JavaScript for game logic, movement, scoring, and state management.
+## Run it
 
----
+Open `index.html` in a browser, or serve the folder:
 
-## Project Structure
-PixelChomp/
-- index.html        # Entry point with canvas and menu
-- game.js           # Core game logic
-- background.png    # Arcade-style background
-- README.md         # Project documentation
+```
+python -m http.server 8000
+```
 
-## Future Plans
-- Add ghost enemies with simple AI.
-- Settings menu with speed options (Slow / Normal / Fast).
-- Win screen when all dots are collected.
-- Animated title and glowing effects for extra arcade flair
+Then visit `http://localhost:8000`.
 
----
+## Project structure
 
-## How to Play
-- Open index.html in your browser.
-- On the start screen, click Start (or press Enter if shortcut added).
-- Use Arrow Keys to change direction.
-- Eat all the pixel dots to increase your score.
-- Avoid walls — you can only move through empty spaces.
+```
+index.html     Page, menus and canvas
+game.js        Game loop, levels, ghost AI, input
+assets/
+  audios/      Background music
+  fonts/       Pixel fonts (see their licence files)
+  videos/      Background video
+```
 
----
+## Roadmap
 
-## **License**
-This project is open-source under the MIT License.
-Feel free to fork, modify, and experiment with your own twists!✨✨✨
-**Chomp pixels, dodge ghosts, relive nostalgia**
+- [ ] Settings screen (currently a placeholder)
+- [ ] Touch controls for mobile
+- [ ] Multiple ghosts on later levels
+
+## Credits
+
+Game design and code by Md. Fahim Hassan. Fonts remain under their own licences in `assets/fonts/`.
